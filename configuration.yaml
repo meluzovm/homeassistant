@@ -1,0 +1,77 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+
+duckdns:
+  domain: !secret domain
+  access_token: !secret access_token
+  
+http:
+  base_url: !secret base_url   
+  ssl_certificate: !secret ssl_certificate
+  ssl_key: !secret ssl_key 
+# ip_ban_enabled: True
+# login_attempts_threshold: 5
+
+vacuum:
+  - platform: roomba
+    host: 192.168.178.27
+    username: !secret roomba_user
+    password: !secret roomba_pass
+    name: Voland
+    continuous: true
+
+tuya:
+  username: !secret tuya_user
+  password: !secret tuya_pass
+  country_code: 49
+  platform: smart_life
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.178.0/24
+    home_interval: 30
+    exclude:
+      - 192.168.178.111
+      - 192.168.178.34
+
+
+tplink:
+  discovery: false
+  switch:
+    - host: 192.168.178.32
+
+      #alexa_media:
+        #accounts:
+          #- email: !secret amazon_user
+      #password: !secret amazon_pass
+      # url: amazon.de
+      #      scan_interval: 30
+
+logger: !include logger.yaml
+
+input_boolean :
+  wakeup_enabled:
+    name: "Wake-up lights"
+    initial: on
+    icon: mdi:theme-light-dark
+  wakeup_weekend:
+    name: "Enable Wake-up on weekends"
+    initial: off # I disable the system on default on weekends
+    icon: mdi:calendar-blank
+input_datetime:
+  wakeup_time:
+    name: "Start lights at"
+    has_time: true
+    has_date: false
+    initial: "06:45"
+
