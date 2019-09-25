@@ -11,6 +11,9 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
 
+#discovery:
+#ios:
+
 duckdns:
   domain: !secret domain
   access_token: !secret access_token
@@ -19,11 +22,11 @@ http:
   base_url: !secret base_url   
   ssl_certificate: !secret ssl_certificate
   ssl_key: !secret ssl_key 
-# ip_ban_enabled: True
-# login_attempts_threshold: 5
+  ip_ban_enabled: True
+  login_attempts_threshold: 5
 
 vacuum:
-  - platform: roomba
+  - platform: roomba    
     host: 192.168.178.27
     username: !secret roomba_user
     password: !secret roomba_pass
@@ -36,6 +39,11 @@ tuya:
   country_code: 49
   platform: smart_life
 
+fritzbox:
+  devices:
+    - host: fritz.box
+      username: !secret fritz_username
+      password: !secret fritz_password
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.178.0/24
@@ -43,6 +51,25 @@ device_tracker:
     exclude:
       - 192.168.178.111
       - 192.168.178.34
+        #  - platform: icloud
+        #username: !secret icloud_username
+        #password: !secret icloud_password
+        #    account_name: unm
+
+        #owntracks:
+
+telegram_bot:
+  - platform: webhooks
+    api_key: !secret telegram_api_key
+    parse_mode: html
+    allowed_chat_ids:
+      - 29055811
+
+notify:
+  - name: Telegram
+    platform: telegram
+    api_key: !secret telegram_api_key
+    chat_id: 29055811
 
 
 tplink:
@@ -50,14 +77,17 @@ tplink:
   switch:
     - host: 192.168.178.32
 
-      #alexa_media:
-        #accounts:
-          #- email: !secret amazon_user
-      #password: !secret amazon_pass
-      # url: amazon.de
-      #      scan_interval: 30
+alexa_media:
+  accounts:
+   - email: !secret amazon_user
+     password: !secret amazon_pass
+     url: amazon.de
+     include_devices: 
+       - "Echo Dot"
 
 logger: !include logger.yaml
+#logger:
+#  default: debug
 
 input_boolean :
   wakeup_enabled:
