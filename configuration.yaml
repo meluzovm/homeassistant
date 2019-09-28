@@ -6,13 +6,18 @@ default_config:
 tts:
   - platform: google_translate
 
-group: !include groups.yaml
+#includes
 automation: !include automations.yaml
+group: !include groups.yaml
+history: !include history.yaml
+logger: !include logger.yaml
+person: !include persons.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
+zone: !include zones.yaml
 
-#discovery:
-#ios:
+homeassistant:
+  customize: !include customize.yaml 
 
 duckdns:
   domain: !secret domain
@@ -39,11 +44,18 @@ tuya:
   country_code: 49
   platform: smart_life
 
+weather:
+  - platform: darksky
+    api_key: !secret darksky_api_key
+    #    mode: daily
+    name: darksky
+
 fritzbox:
   devices:
     - host: fritz.box
       username: !secret fritz_username
       password: !secret fritz_password
+      
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.178.0/24
@@ -51,26 +63,35 @@ device_tracker:
     exclude:
       - 192.168.178.111
       - 192.168.178.34
-        #  - platform: icloud
-        #username: !secret icloud_username
-        #password: !secret icloud_password
-        #    account_name: unm
-
-        #owntracks:
+  - platform: icloud3
+    username: !secret icloud_username 
+    password: !secret icloud_password
+    account_name: unm
+    include_device_type: iphone
+    include_device: iphone
 
 telegram_bot:
   - platform: webhooks
     api_key: !secret telegram_api_key
     parse_mode: html
     allowed_chat_ids:
-      - 29055811
+      - !secret chat_id_mm
+      - !secret chat_id_um  
 
 notify:
-  - name: Telegram
+  - name: mikhail
     platform: telegram
     api_key: !secret telegram_api_key
-    chat_id: 29055811
-
+    chat_id: !secret chat_id_mm
+  - name: uliana
+    platform: telegram
+    api_key: !secret telegram_api_key
+    chat_id: !secret chat_id_um
+  - name: telegram_all
+    platform: group
+    services:
+      - service: mikhail
+      - service: uliana
 
 tplink:
   discovery: false
@@ -85,9 +106,9 @@ alexa_media:
      include_devices: 
        - "Echo Dot"
 
-logger: !include logger.yaml
 #logger:
 #  default: debug
+
 
 input_boolean :
   wakeup_enabled:

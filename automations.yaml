@@ -1,29 +1,64 @@
-- id: '1566810704743'
-  alias: Voland Start
+- id: '1566811891833'
+  alias: Guten M0rgen
   trigger:
-  - at: '12:00:00'
-    platform: time
-  - at: 08:30:00
-    platform: time
+    platform: template
+    value_template: '{{ states(''sensor.time'') == (states.input_datetime.wakeup_time.attributes.timestamp
+      | int | timestamp_custom(''%H:%M'', False)) }}'
   condition:
-    condition: and
+  - condition: state
+    entity_id: input_boolean.wakeup_enabled
+    state: 'on'
+  - condition: or
     conditions:
-    - condition: template
-      value_template: '{{ states.vacuum.voland.attributes.battery_level > 95 }}'
-    - condition: template
-      value_template: '{{ states.vacuum.voland.attributes.status == ''Charging'' }}'
+    - condition: state
+      entity_id: input_boolean.wakeup_weekend
+      state: 'on'
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
   action:
   - data:
-      entity_id: vacuum.voland
-    service: vacuum.start_pause
-  - data:
-      data:
-        type: push
-      message: Voland started
-      title: Home Assistant
-    service: notify.alexa_media_this_device
+      brightness_pct: '1'
+      entity_id: light.schlafzimmer
+      transition: '900'
+    service: light.turn_on
+  - delay: 00:00:05
+  - service: light.turn_on
+    data:
+      brightness_pct: '100'
+      entity_id: light.schlafzimmer
+      transition: '900'
+  - service: media_player.play_media
+    data:
+      entity_id: media_player.echo_dot
+      media_content_id: gute laune
+      media_content_type: AMAZON_MUSIC
+  - service: media_player.volume_set
+    data:
+      entity_id: media_player.echo_dot
+      volume_level: '0.2'
+
+#Light      
+      
+- id: '1567022052475'
+  alias: Bad Lampe ON
+  trigger:
+  - platform: time_pattern
+    hours: '21'
+    minutes: '00'
+    seconds: '00'
+  condition: []
+  action:
+  - service: switch.turn_on
+    data:
+      entity_id: switch.bad_lampe
+
 - id: '1566811828554'
-  alias: Bad Lampe Off
+  alias: Bad Lampe OFF
   trigger:
   - at: 07:00:00
     platform: time
@@ -32,62 +67,80 @@
   - service: switch.turn_off
     data:
       entity_id: switch.bad_lampe
-- id: '1566811891833'
-  alias: Guten M0rgen
+#Presence detection     
+- id: '1569415376526'
+  alias: Presence detection MM
   trigger:
-    platform: template
-    value_template: "{{ states('sensor.time') == (states.input_datetime.wakeup_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
-  #  trigger:
-  #  - at: 07:30:00
-  #    platform: time
-  #  condition: []
-  
-  condition:
-    - condition: state
-      entity_id: input_boolean.wakeup_enabled
-      state: 'on'
-    - condition: or # One of the conditions below must be true
-      conditions:
-        - condition: state # Will be true when the switch is 'on'
-          entity_id: input_boolean.wakeup_weekend
-          state: 'on'
-        - condition: time # Will be true on weekdays
-          weekday:
-            - mon
-            - tue
-            - wed
-            - thu
-            - fri
-  action:
-  - data:
-      brightness_pct: '1'
-      entity_id: light.schlafzimmer
-      transition: '900'
-    service: light.turn_on
-  - delay: 00:00:05
-  - data:
-      brightness_pct: '100'
-      entity_id: light.schlafzimmer
-      transition: '900'
-    service: light.turn_on
-  - data:
-      entity_id: media_player.echo_dot
-      media_content_id: gute laune
-      media_content_type: AMAZON_MUSIC
-    service: media_player.play_media
-  - data:
-      entity_id: media_player.echo_dot
-      volume_level: '0.4'
-    service: media_player.volume_set
-- id: '1567022052475'
-  alias: Bad LAmpe ON
-  trigger:
-  - hours: '21'
-    minutes: '00'
-    platform: time_pattern
-    seconds: '00'
+  - entity_id: person.mikhail_3
+    from: not_home
+    platform: state
+    to: home
   condition: []
   action:
   - data:
-      entity_id: switch.bad_lampe
-    service: switch.turn_on
+      message: Mikhail is at home
+    service: notify.telegram_all
+- id: '1569415376527'
+  alias: Presence detection UM
+  trigger:
+  - entity_id: person.uliana_3
+    from: not_home
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      message: Uliana is at home
+    service: notify.telegram_all
+
+#Voland    
+- id: '1566810704743'
+  alias: Voland Start
+  trigger:
+  - at: '12:00:00'
+    platform: time
+  - at: '08:30:00'
+    platform: time
+  condition:
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: '{{ states.vacuum.voland.attributes.battery_level > 95 }}'
+    - condition: template
+      value_template: '{{ states.vacuum.voland.attributes.status == ''Charging'' }}'
+    - condition: time
+      weekday:
+      - mon
+      - tue
+      - wed
+      - thu
+      - fri
+  action:
+  - service: vacuum.start_pause
+    data:
+      entity_id: vacuum.voland
+  - service: notify.telegram_all
+    data:
+      message: Voland started cleaning
+
+- id: '1569526048860'
+  alias: Voland Finish
+  trigger:
+    - platform: template
+      value_template: "{{ states.vacuum.voland.attributes.status == 'Docking - End Mission' }}"
+  condition: []
+  action:
+  - data:
+      message: Voland finished successfully his task
+    service: notify.telegram_all
+
+- id: '1569526121970'
+  alias: Voland Stuck
+  trigger:
+      platform: template
+      value_template: "{{ states.vacuum.voland.attributes.status == 'Stuck' }}"
+  condition: []
+  action:
+  - data:
+      message: Attention! Voland is stuck
+    service: notify.telegram_all
