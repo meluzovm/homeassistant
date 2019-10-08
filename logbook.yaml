@@ -1,0 +1,6 @@
+exclude:
+  domains:
+    - updater
+  entities:
+    - input_datetime.wakeup_time    
+

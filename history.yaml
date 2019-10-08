@@ -1,0 +1,22 @@
+exclude:
+  entities:
+    - switch.echo_dot_do_not_disturb_switch
+    - switch.echo_dot_repeat_switch
+    - switch.echo_dot_shuffle_switch
+    - automation.bad_lampe_on  
+    - automation.bad_lampe_off  
+    - automation.voland_start
+    - automation.voland_finish
+    - automation.voland_stuck
+    - automation.presence_detection_mm  
+    - automation.presence_detection_um
+ #devices       
+    - device_tracker.amazon_a74f16cc4_fritz_box
+    - device_tracker.fritz_box
+    - device_tracker.macbookair
+    - device_tracker.macbookair_fritz_box
+    - device_tracker.philips_hue_fritz_box  
+#inputs
+    - input_boolean.wakeup_enabled
+    - group.alarm_clock
+      
