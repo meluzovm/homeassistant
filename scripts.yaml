@@ -1,0 +1,13 @@
+icloud_lost_iphone_mm:
+  alias: Find Lost Phone Alert (MM)
+  sequence:
+  - data:
+      device_name: iphone
+    service: device_tracker.icloud_lost_iphone
+icloud_update_location_mm:
+  alias: Update Location (Mikhail)
+  sequence:
+  - service: device_tracker.icloud_update
+    data:
+      device_name: iphone
+      command: location

@@ -10,11 +10,16 @@ tts:
 automation: !include automations.yaml
 group: !include groups.yaml
 history: !include history.yaml
+input_boolean: !include inputs_boolean.yaml
+input_datetime: !include inputs_datetime.yaml
 logger: !include logger.yaml
 person: !include persons.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
 zone: !include zones.yaml
+
+#recorder: 
+#db_url: mysql://ha:GgHyw28RQJ2XeJjk@localhost/homeassistant?charset=utf9
 
 homeassistant:
   customize: !include customize.yaml 
@@ -36,7 +41,7 @@ vacuum:
     username: !secret roomba_user
     password: !secret roomba_pass
     name: Voland
-    continuous: true
+    continuous: False
 
 tuya:
   username: !secret tuya_user
@@ -67,6 +72,10 @@ device_tracker:
     username: !secret icloud_username 
     password: !secret icloud_password
     account_name: unm
+    inzone_interval: '1 h'
+    unit_of_measurement: km
+    distance_method: waze
+    waze_region: EU
     include_device_type: iphone
     include_device: iphone
 
@@ -108,21 +117,4 @@ alexa_media:
 
 #logger:
 #  default: debug
-
-
-input_boolean :
-  wakeup_enabled:
-    name: "Wake-up lights"
-    initial: on
-    icon: mdi:theme-light-dark
-  wakeup_weekend:
-    name: "Enable Wake-up on weekends"
-    initial: off # I disable the system on default on weekends
-    icon: mdi:calendar-blank
-input_datetime:
-  wakeup_time:
-    name: "Start lights at"
-    has_time: true
-    has_date: false
-    initial: "06:45"
 

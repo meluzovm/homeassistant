@@ -3,4 +3,10 @@ alarm_clock:
   entities: # Add all entities here that should be part of the widget
     - input_datetime.wakeup_time
     - input_boolean.wakeup_enabled
-    - input_boolean.wakeup_weekend
+      #    - input_boolean.wakeup_weekend
+
+mikhail:
+  name: Mikhail
+  entities:
+    - device_tracker.iphone_fritz_box
+    - device_tracker.iphone
