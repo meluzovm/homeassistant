@@ -29,9 +29,12 @@ duckdns:
   access_token: !secret access_token
   
 http:
-  base_url: !secret base_url   
-  ssl_certificate: !secret ssl_certificate
-  ssl_key: !secret ssl_key 
+  #  base_url: !secret base_url  
+  #  server_port: 8443
+  use_x_forwarded_for: true
+  trusted_proxies: 127.0.0.1
+  #  ssl_certificate: !secret ssl_certificate
+  #  ssl_key: !secret ssl_key 
   ip_ban_enabled: True
   login_attempts_threshold: 5
 
@@ -41,7 +44,8 @@ vacuum:
     username: !secret roomba_user
     password: !secret roomba_pass
     name: Voland
-    continuous: False
+    #    continuous: False
+    continuous: True
 
 tuya:
   username: !secret tuya_user
@@ -72,7 +76,7 @@ device_tracker:
     username: !secret icloud_username 
     password: !secret icloud_password
     account_name: unm
-    inzone_interval: '1 h'
+    #  inzone_interval: '1 h'
     unit_of_measurement: km
     distance_method: waze
     waze_region: EU
@@ -83,6 +87,7 @@ telegram_bot:
   - platform: webhooks
     api_key: !secret telegram_api_key
     parse_mode: html
+    url: !secret base_url
     allowed_chat_ids:
       - !secret chat_id_mm
       - !secret chat_id_um  
