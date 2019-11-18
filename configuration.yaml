@@ -18,9 +18,6 @@ script: !include scripts.yaml
 sensor: !include sensors.yaml
 zone: !include zones.yaml
 
-#recorder: 
-#db_url: mysql://ha:GgHyw28RQJ2XeJjk@localhost/homeassistant?charset=utf9
-
 homeassistant:
   customize: !include customize.yaml 
 
@@ -56,7 +53,6 @@ tuya:
 weather:
   - platform: darksky
     api_key: !secret darksky_api_key
-    #    mode: daily
     name: darksky
 
 fritzbox:
@@ -71,6 +67,7 @@ device_tracker:
     home_interval: 30
     exclude:
       - 192.168.178.111
+      - 192.168.178.112
       - 192.168.178.34
   - platform: icloud3
     username: !secret icloud_username 

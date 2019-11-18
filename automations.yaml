@@ -8,11 +8,6 @@
   - condition: state
     entity_id: input_boolean.wakeup_enabled
     state: 'on'
-    #  - condition: or
-    #    conditions:
-    #    - condition: state
-    #      entity_id: input_boolean.wakeup_weekend
-    #      state: 'on'
   - condition: time
     weekday:
     - mon
@@ -41,9 +36,6 @@
     data:
       entity_id: media_player.echo_dot
       volume_level: '0.2'
-
-#Light      
-      
 - id: '1567022052475'
   alias: Bad Lampe ON
   trigger:
@@ -56,7 +48,6 @@
   - service: switch.turn_on
     data:
       entity_id: switch.bad_lampe
-
 - id: '1566811828554'
   alias: Bad Lampe OFF
   trigger:
@@ -67,14 +58,13 @@
   - service: switch.turn_off
     data:
       entity_id: switch.bad_lampe
-#Presence detection     
 - id: '1569415376526'
   alias: Presence detection MM
   trigger:
   - entity_id: person.mikhail_3
-    from: not_home
-    platform: state
-    to: home
+    event: enter
+    platform: zone
+    zone: zone.home
   condition: []
   action:
   - data:
@@ -84,22 +74,20 @@
   alias: Presence detection UM
   trigger:
   - entity_id: person.uliana_3
-    from: not_home
-    platform: state
-    to: home
+    event: enter
+    platform: zone
+    zone: zone.home
   condition: []
   action:
   - data:
       message: Uliana is at home
     service: notify.telegram_all
-
-#Voland    
 - id: '1566810704743'
   alias: Voland Start
   trigger:
   - at: '12:00:00'
     platform: time
-  - at: '08:30:00'
+  - at: 08:30:00
     platform: time
   condition:
   - condition: and
@@ -122,25 +110,64 @@
   - service: notify.telegram_all
     data:
       message: Voland started cleaning
-
 - id: '1569526048860'
   alias: Voland Finish
   trigger:
-    - platform: template
-      value_template: "{{ states.vacuum.voland.attributes.status == 'Docking - End Mission' }}"
+  - platform: template
+    value_template: '{{ states.vacuum.voland.attributes.status == ''Docking - End
+      Mission'' }}'
   condition: []
   action:
   - data:
       message: Voland finished successfully his task
     service: notify.telegram_all
-
 - id: '1569526121970'
   alias: Voland Stuck
   trigger:
-      platform: template
-      value_template: "{{ states.vacuum.voland.attributes.status == 'Stuck' }}"
+    platform: template
+    value_template: '{{ states.vacuum.voland.attributes.status == ''Stuck'' }}'
   condition: []
   action:
   - data:
       message: Attention! Voland is stuck
     service: notify.telegram_all
+- id: '1574015051490'
+  alias: Huawei Battery
+  description: ''
+  trigger:
+  - platform: template
+    value_template: '{{ states.sensor.huawei_p30_lit_battery_sensor.state < 10 }}'
+  condition: []
+  action:
+  - data:
+      message: Attention! Battery of Huawei is lower than 10%
+    service: notify.mikhail
+- id: Hass Startup Notification
+  alias: Hass Startup Notification
+  trigger:
+  - event: start
+    platform: homeassistant
+  action:
+  - data:
+      message: Hass restarted
+    service: notify.mikhail
+- id: Hass Shutdown Notification
+  alias: Hass Shutdown Notification
+  trigger:
+  - event: shutdown
+    platform: homeassistant
+  action:
+  - data:
+      message: Hass shutdown
+    service: notify.mikhail
+- alias: System - New device connected
+  trigger:
+    - platform: event
+      event_type: device_tracker_new_device
+  action:
+    - service: notify.mikhail
+      data_template:
+        message: >
+          New device:
+          {{trigger.event.data.host_name}}
+          ({{trigger.event.data.entity_id}})    
