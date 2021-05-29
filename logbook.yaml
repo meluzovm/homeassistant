@@ -3,4 +3,5 @@ exclude:
     - updater
   entities:
     - input_datetime.wakeup_time    
+    - sensor.time  
 

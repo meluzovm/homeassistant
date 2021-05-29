@@ -1,13 +1,57 @@
-icloud_lost_iphone_mm:
-  alias: Find Lost Phone Alert (MM)
+announce_echo_dot:
+  alias: announce_echo_dot
   sequence:
   - data:
-      device_name: iphone
-    service: device_tracker.icloud_lost_iphone
-icloud_update_location_mm:
-  alias: Update Location (Mikhail)
+      entity_id: media_player.echo_dot
+      volume_level: 0.5
+    entity_id: media_player.echo_dot
+    service: media_player.volume_set
+  - delay: 00:00:02
+  - data:
+      data:
+        method: speak
+        type: announce
+      message: '{{ states(''input_text.alexa_tts'') }}'
+      target: media_player.echo_dot
+    service: notify.alexa_media_echo_dot
+  - delay: 00:00:02
+  - data:
+      entity_id: media_player.echo_dot
+      volume_level: 0.3
+    entity_id: media_player.echo_dot
+    service: media_player.volume_set
+turn_all_devices_off:
+  alias: Turn all devices off
   sequence:
-  - service: device_tracker.icloud_update
-    data:
-      device_name: iphone
-      command: location
+  - service: homeassistant.turn_off
+    data: {}
+    entity_id: group.ha_schlafzimmer
+  - service: homeassistant.turn_off
+    entity_id: group.ha_wohnzimmer
+    data: {}
+  - service: homeassistant.turn_off
+    entity_id: group.ha_esszimmer
+    data: {}
+  - service: homeassistant.turn_off
+    data: {}
+    entity_id: group.ha_aqua_10
+  - service: homeassistant.turn_off
+    data: {}
+    entity_id: group.ha_aqua_120
+  mode: single
+turn_all_devices_except_aqua:
+  alias: 'Turn all devices off except Aqua '
+  sequence:
+  - service: homeassistant.turn_off
+    data: {}
+    entity_id: group.ha_schlafzimmer
+  - service: homeassistant.turn_off
+    entity_id: group.ha_wohnzimmer
+    data: {}
+  - service: homeassistant.turn_off
+    entity_id: group.ha_esszimmer
+    data: {}
+  - service: light.turn_off
+    target:
+      area_id: hue_kuche
+  mode: single

@@ -1,22 +1,40 @@
 exclude:
+  domains:
+    - automation
+    - updater      
   entities:
     - switch.echo_dot_do_not_disturb_switch
     - switch.echo_dot_repeat_switch
     - switch.echo_dot_shuffle_switch
-    - automation.bad_lampe_on  
-    - automation.bad_lampe_off  
-    - automation.voland_start
-    - automation.voland_finish
-    - automation.voland_stuck
-    - automation.presence_detection_mm  
-    - automation.presence_detection_um
- #devices       
-    - device_tracker.amazon_a74f16cc4_fritz_box
-    - device_tracker.fritz_box
-    - device_tracker.macbookair
-    - device_tracker.macbookair_fritz_box
-    - device_tracker.philips_hue_fritz_box  
+ #automations      
+#    - automation.bad_lampe_on  
+#    - automation.bad_lampe_off
+#    - automation.guten_morgen  
+#    - automation.hass_shutdown_notification
+#    - automation.hass_startup_notification  
+#    - automation.huawei_battery
+#    - automation.presence_detection_mm  
+#    - automation.presence_detection_um
+#    - automation.system_new_device_connected  
+#    - automation.voland_start
+#    - automation.voland_finish
+#    - automation.voland_stuck
+
+#devices       
+
 #inputs
     - input_boolean.wakeup_enabled
+    - input_datetime.wakeup_time
+    - input_text.alexa_tts  
+    - input_select.hours_to_show
+#groups   
     - group.alarm_clock
-      
+#sensors
+    - binary_sensor.voland_bin_full
+    - sensor.time
+    - sensor.echo_dot_next_alarm
+    - sensor.echo_dot_next_reminder
+    - sensor.echo_dot_next_timer    
+#scripts
+    - script.announce_echo_dot
+    - script.turn_all_devices_off

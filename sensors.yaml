@@ -1,3 +1,13 @@
 - platform: time_date
   display_options:
     - 'time'
+- platform: template
+  sensors:
+    aw7_temperature:
+      friendly_name: Current temperature
+      value_template: "{{ state_attr('weather.aw7','temperature') }}"
+      unit_of_measurement: "°C"      
+    aw7_pressure:
+      friendly_name: Current pressure
+      value_template: "{{ state_attr('weather.aw7','pressure') }}"
+      unit_of_measurement: "hPa"     

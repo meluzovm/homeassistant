@@ -1,4 +1,6 @@
 person.mikhail_3:
-  entity_picture: "/local/mikhail.jpg"
+  entity_picture: /local/mikhail.jpg
 person.uliana_3:
-  entity_picture: "/local/uliana.jpg"
+  entity_picture: /local/uliana.jpg
+person.mikhail:
+  icon: mdi:jellyfish

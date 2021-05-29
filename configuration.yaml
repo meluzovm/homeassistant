@@ -1,8 +1,5 @@
-
-# Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
-# Text to speech
 tts:
   - platform: google_translate
 
@@ -12,55 +9,41 @@ group: !include groups.yaml
 history: !include history.yaml
 input_boolean: !include inputs_boolean.yaml
 input_datetime: !include inputs_datetime.yaml
+input_text: !include inputs_text.yaml
+logbook: !include logbook.yaml
 logger: !include logger.yaml
-person: !include persons.yaml
+#person: !include persons.yaml
+recorder: !include recorder.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
 zone: !include zones.yaml
 
 homeassistant:
   customize: !include customize.yaml 
+  external_url: !secret  exrenal_url
+  internal_url: http://192.168.178.112:8123 
 
 duckdns:
   domain: !secret domain
   access_token: !secret access_token
   
 http:
-  #  base_url: !secret base_url  
-  #  server_port: 8443
   use_x_forwarded_for: true
   trusted_proxies: 127.0.0.1
-  #  ssl_certificate: !secret ssl_certificate
-  #  ssl_key: !secret ssl_key 
   ip_ban_enabled: True
   login_attempts_threshold: 5
+#  base_url: !secret base_url  
+#  server_port: 8443
+#  ssl_certificate: !secret ssl_certificate
+#  ssl_key: !secret ssl_key 
 
-vacuum:
-  - platform: roomba    
-    host: 192.168.178.27
-    username: !secret roomba_user
-    password: !secret roomba_pass
-    name: Voland
-    #    continuous: False
-    continuous: True
 
-tuya:
-  username: !secret tuya_user
-  password: !secret tuya_pass
-  country_code: 49
-  platform: smart_life
 
 weather:
   - platform: darksky
     api_key: !secret darksky_api_key
     name: darksky
 
-fritzbox:
-  devices:
-    - host: fritz.box
-      username: !secret fritz_username
-      password: !secret fritz_password
-      
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.178.0/24
@@ -69,16 +52,8 @@ device_tracker:
       - 192.168.178.111
       - 192.168.178.112
       - 192.168.178.34
-  - platform: icloud3
-    username: !secret icloud_username 
-    password: !secret icloud_password
-    account_name: unm
-    #  inzone_interval: '1 h'
-    unit_of_measurement: km
-    distance_method: waze
-    waze_region: EU
-    include_device_type: iphone
-    include_device: iphone
+      - 192.168.178.53
+      - 192.168.178.29
 
 telegram_bot:
   - platform: webhooks
@@ -107,16 +82,48 @@ notify:
 tplink:
   discovery: false
   switch:
-    - host: 192.168.178.32
-
-alexa_media:
-  accounts:
-   - email: !secret amazon_user
-     password: !secret amazon_pass
-     url: amazon.de
-     include_devices: 
-       - "Echo Dot"
+      # ??    
+      #    - host: 192.168.178.32
+    - host: 192.168.178.39
+    - host: 192.168.178.40
+      #Erkerlicht
+      #    - host: 192.168.178.45
+      # ??
+      #  - host: 192.168.178.57
 
 #logger:
 #  default: debug
 
+##################################   OLD   ######################
+
+#vacuum:
+#  - platform: roomba    
+#    host: 192.168.178.27
+#    username: !secret roomba_user
+#    password: !secret roomba_pass
+#    name: Voland
+#    continuous: True
+
+#tuya:
+#username: !secret tuya_user
+#password: !secret tuya_pass
+#country_code: 49
+#platform: smart_life
+
+#fritzbox:
+#  devices:
+#    - host: fritz.box
+#      username: !secret fritz_username
+#      password: !secret fritz_password
+      
+#alexa_media:
+#  accounts:
+#   - email: !secret amazon_user
+#     password: !secret amazon_pass
+#     url: amazon.de
+#     include_devices: 
+#       - "Echo Dot"
+#       - "Fire TV"  
+#tado:
+#  - username: !secret tado_username
+#    password: !secret tado_password

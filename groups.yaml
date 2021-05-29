@@ -5,8 +5,44 @@ alarm_clock:
     - input_boolean.wakeup_enabled
       #    - input_boolean.wakeup_weekend
 
-mikhail:
-  name: Mikhail
+#mikhail:
+#  name: Mikhail
+#  entities:
+#    - device_tracker.iphone_fritz_box
+#    - device_tracker.iphone
+
+
+ha_wohnzimmer:
+  name: HA_Wohnzimmer
   entities:
-    - device_tracker.iphone_fritz_box
-    - device_tracker.iphone
+    - light.sofalicht
+    - light.burolicht
+    - switch.sofa_steckdose
+    - switch.terasse
+ha_schlafzimmer:
+  name: HA_Schlafzimmer
+  entities:
+    - light.bett_1
+    - light.bett_2
+    - switch.kosmos
+ha_esszimmer:
+  name: HA_Esszimmer
+  entities:
+    - light.esstisch
+    - switch.erkerlicht
+ha_aqua_10:
+  name: "HA_Aqua_10"
+  entities:
+    - switch.aqua10
+ha_aqua_120:
+  name: "HA_Aqua_120"
+  entities:
+    - switch.07216800840d8e63fe2b_1
+    - switch.07216800840d8e63fe2b_2
+    - switch.07216800840d8e63fe2b_3
+
+##For future
+ha_badzimmer:
+  name: HA_Badzimmer     
+ha_kuche:
+  name: HA_Küche      

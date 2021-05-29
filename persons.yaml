@@ -1,12 +1,12 @@
-- name: Mikhail
-  id: mikhail
-  user_id: 3d9efe27124b46acae6ff24faeb9205e
-  device_trackers:
-    - device_tracker.iphone_fritz_box
-    - device_tracker.iphone
-- name: Uliana
-  id: uliana
-  user_id: f62e8e0b0c6e4737a4616979b6b9d4ce
-  device_trackers:
-    - device_tracker.huawei_p30_lit
-    - device_tracker.huawei_p30_lite_b252c2c8a_fritz_box
+#- name: Mikhail
+#  id: mikhail
+#  user_id: 5d3edc8012b74826af6470f65d280bae 
+#  device_trackers:
+#    - device_tracker.iphone_fritz_box
+#    - device_tracker.iphone
+#- name: Uliana
+#  id: uliana
+#  user_id: 7afb133cae114e62b21dcb4bf8221f39
+#  device_trackers:
+#    - device_tracker.mar_lx1a
+#    - device_tracker.huawei_p30_lite_b252c2c8a_fritz_box

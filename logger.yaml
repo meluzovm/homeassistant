@@ -7,21 +7,18 @@
 # Log Severities: notset, debug, info, warn, warning, error, fatal, critical
 
 default: info
+#default: debug
 logs:
   homeassistant.core: error
   homeassistant.components.automation: warn
   homeassistant.components.device_tracker: error
   homeassistant.components.discovery: warn
   homeassistant.components.http: warn
-  homeassistant.components.tuya: debug
+  #  homeassistant.components.tuya: debug
   #  homeassistant.components.roomba: debug
-  homeassistant.components.media_player: debug
+  # homeassistant.components.media_player: debug
+  homeassistant.components.tado: warn
   homeassistant.helpers.script: info
   homeassistant.helpers.entity: critical
   homeassistant.exceptions: info
-  #  pubnub: critical
-  #  py.warnings: error
-  #  requests.packages.urllib3.connectionpool: critical
-  #  urllib3.connectionpool: error
   root: warn
-  #  skybellpy: warn
